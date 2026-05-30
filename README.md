@@ -12,7 +12,7 @@ Além da API, foi desenvolvido um Front-end simples utilizando HTML, CSS e JavaS
 
 ## Preview da Aplicação
 
-![Preview do Sistema](./docs/preview.png)
+![Preview do Sistema](./docs/img.png)
 
 ---
 
