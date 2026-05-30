@@ -378,9 +378,6 @@ Este projeto foi desenvolvido para consolidar conhecimentos em:
 * Integração Front-end ↔ Back-end
 
 ---
-# preview
-<img width="1351" height="592" alt="image" src="https://github.com/user-attachments/assets/6069b50e-aa4d-4bb7-9e86-3647758bbf04" />
-
 
 # Próximos Passos
 
