@@ -1,5 +1,7 @@
 package crud.teste.api.api.service;
 
+import crud.teste.api.api.dto.PedidoResponseDto;
+import crud.teste.api.api.dto.PedidoResquestDto;
 import crud.teste.api.api.model.Cliente;
 import crud.teste.api.api.model.Pedido;
 import crud.teste.api.api.repository.PedidoRepository;
@@ -18,34 +20,54 @@ public class PedidoService {
         this.clienteService = clienteService;
     }
 
-    public Pedido salvar(Pedido pedido, Long clienteId) {
-        Cliente cliente = clienteService.buscarPorId(clienteId);
+    public PedidoResponseDto salvar(PedidoResquestDto pedidoResquestDto, Long clienteId) {
 
-        pedido.setCliente(cliente);
+        Cliente cliente = clienteService.buscarEntidadePorId(clienteId);
+        pedidoResquestDto.setCliente(cliente);
+        Pedido pedido = new Pedido();
+        pedido.setCliente(pedidoResquestDto.getCliente());
+        pedido.setDescricao( pedidoResquestDto.getDescricao());
+        pedido.setValor(pedidoResquestDto.getValor());
+        Pedido pedidoSalvo = pedidoRepository.save(pedido);
 
-        return pedidoRepository.save(pedido);
+        return new PedidoResponseDto(
+                pedidoSalvo.getId(), pedidoSalvo.getDescricao(), pedidoSalvo.getValor() , pedidoSalvo.getCliente()
+        );
     }
 
-    public List<Pedido> listarTodosPedidos() {
-        return pedidoRepository.findAll();
+    public List<PedidoResponseDto> listarTodosPedidos() {
+        List <Pedido> todosPedidos = pedidoRepository.findAll();
+        return todosPedidos.stream()
+                .map( Pedido -> new PedidoResponseDto(
+                        Pedido.getId(), Pedido.getDescricao(), Pedido.getValor() , Pedido.getCliente())
+                ).toList();
+    }
+    private Pedido buscarEntidadePorId(Long id) {
+        return pedidoRepository.findById(id).orElseThrow(() -> new RuntimeException("não foi encontrado esse pedido"));
     }
 
-    public Pedido buscarPorId(Long id) {
-        return pedidoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+    public PedidoResponseDto buscarPorId(Long id) {
+        Pedido pedidoLocalizado = buscarEntidadePorId(id);
+        return new PedidoResponseDto(
+                pedidoLocalizado.getId(), pedidoLocalizado.getDescricao(), pedidoLocalizado.getValor() , pedidoLocalizado.getCliente()
+        );
     }
 
-    public Pedido atualizar(Long id, Pedido pedidoAtualizado) {
-        Pedido pedido = buscarPorId(id);
+    public PedidoResponseDto atualizar(Long id, PedidoResquestDto pedidoAtualizado) {
+        Pedido pedidoLocalizado = buscarEntidadePorId(id);
 
-        pedido.setDescricao(pedidoAtualizado.getDescricao());
-        pedido.setValor(pedidoAtualizado.getValor());
+        pedidoLocalizado.setDescricao(pedidoAtualizado.getDescricao());
+        pedidoLocalizado.setValor(pedidoAtualizado.getValor());
 
-        return pedidoRepository.save(pedido);
+        Pedido pedidoSalvo =  pedidoRepository.save(pedidoLocalizado);
+        return new PedidoResponseDto(
+                pedidoSalvo.getId(), pedidoSalvo.getDescricao(), pedidoSalvo.getValor() , pedidoSalvo.getCliente()
+        );
     }
 
-    public void deletar(Long id) {
-        Pedido pedido = buscarPorId(id);
-        pedidoRepository.delete(pedido);
+    public String deletar(Long id) {
+        Pedido pedidoLocalizado = buscarEntidadePorId(id);
+        pedidoRepository.delete(pedidoLocalizado);
+        return "Pedido removido com sucesso";
     }
 }

@@ -1,6 +1,7 @@
 package crud.teste.api.api.controler;
 
-import crud.teste.api.api.model.Pedido;
+import crud.teste.api.api.dto.PedidoResponseDto;
+import crud.teste.api.api.dto.PedidoResquestDto;
 import java.util.List;
 import crud.teste.api.api.service.PedidoService;
 import org.springframework.web.bind.annotation.*;
@@ -20,23 +21,23 @@ public class PedidoController {
     }
 
     @PostMapping("/cliente/{id}")
-    public void inserirPedido(@RequestBody Pedido pedido, @PathVariable Long id) {
-        pedidoService.salvar(pedido, id);
+    public void inserirPedido(@RequestBody PedidoResquestDto pedidoResquestDto, @PathVariable Long id) {
+        pedidoService.salvar(pedidoResquestDto, id);
     }
 
     @GetMapping
-    public List<Pedido> buscarTodosPedidos() {
+    public List<PedidoResponseDto> buscarTodosPedidos() {
         return pedidoService.listarTodosPedidos();
     }
 
     @GetMapping("/{id}")
-    public Pedido buscarPorId(@PathVariable Long id) {
+    public PedidoResponseDto buscarPorId(@PathVariable Long id) {
         return pedidoService.buscarPorId(id);
     }
 
     @PutMapping("/{id}")
-    public void atualizarPedido(@PathVariable Long id,@RequestBody Pedido pedido) {
-        pedidoService.atualizar(id, pedido);
+    public PedidoResponseDto atualizarPedido(@PathVariable Long id,@RequestBody PedidoResquestDto pedidoRequestDto) {
+        return pedidoService.atualizar(id, pedidoRequestDto);
     }
 
     @DeleteMapping("/{id}")

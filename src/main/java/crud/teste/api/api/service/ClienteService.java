@@ -1,5 +1,7 @@
 package crud.teste.api.api.service;
 
+import crud.teste.api.api.dto.ClienteRequestDto;
+import crud.teste.api.api.dto.ClienteResponseDto;
 import crud.teste.api.api.hendler.BusinessException;
 import crud.teste.api.api.model.Cliente;
 import crud.teste.api.api.repository.ClienteRepository;
@@ -16,37 +18,65 @@ public class ClienteService {
         this.clienteRepository = clienteRepository;
     }
 
-    public Cliente salvar(Cliente cliente) {
-        if(cliente.getNome() == null || cliente.getNome().isEmpty()){
+    public ClienteResponseDto salvar(ClienteRequestDto clienteRequestDto) {
+        Cliente cliente = new Cliente();
+
+        cliente.setNome(clienteRequestDto.getNome());
+        cliente.setEmail(clienteRequestDto.getEmail());
+        cliente.setTelefone(clienteRequestDto.getTelefone());
+
+        if(cliente.getNome() == null || cliente.getNome().isBlank()){
             throw new BusinessException("O campo de nome é obrigatorio");
         }
 
-        return clienteRepository.save(cliente);
+        Cliente clienteSalvo =  clienteRepository.save(cliente);
+
+        return new ClienteResponseDto(clienteSalvo.getId(), clienteSalvo.getNome(), clienteSalvo.getEmail(), clienteSalvo.getTelefone()
+        );
     }
 
-    public List<Cliente> listarTodos() {
-        return clienteRepository.findAll();
+    public List<ClienteResponseDto> listarTodos() {
+
+        List <Cliente> clientes = clienteRepository.findAll();
+
+        return clientes.stream()
+                .map(cliente -> new ClienteResponseDto(
+                        cliente.getId(), cliente.getNome(), cliente.getEmail(), cliente.getTelefone())
+                ).toList();
+    }
+    public Cliente buscarEntidadePorId(Long id) {
+        return clienteRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("Cliente não encontrado"));
     }
 
-    public Cliente buscarPorId(Long id) {
-        return clienteRepository.findById(id).orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+    public ClienteResponseDto buscarPorId(Long id) {
+        Cliente cliente = buscarEntidadePorId(id);
+        return new ClienteResponseDto(
+                cliente.getId(), cliente.getNome(), cliente.getEmail(), cliente.getTelefone()
+        );
     }
 
-    public Cliente atualizar(Long id, Cliente clienteAtualizado) {
-        Cliente cliente = buscarPorId(id);
+    public ClienteResponseDto atualizar(Long id, ClienteRequestDto clienteRequestDto) {
+        Cliente cliente = buscarEntidadePorId(id);
 
+        cliente.setNome(clienteRequestDto.getNome());
+        cliente.setEmail(clienteRequestDto.getEmail());
+        cliente.setTelefone(clienteRequestDto.getTelefone());
 
-        cliente.setNome(clienteAtualizado.getNome());
-        cliente.setEmail(clienteAtualizado.getEmail());
-        cliente.setTelefone(clienteAtualizado.getTelefone());
-        if(cliente.getNome() == null || cliente.getNome().isEmpty()){
+        if(cliente.getNome() == null || cliente.getNome().isBlank()){
             throw new BusinessException("O campo de nome é obrigatorio");
         }
-        return clienteRepository.save(cliente);
+        Cliente clienteSalvo = clienteRepository.save(cliente);
+
+        return new ClienteResponseDto(
+                clienteSalvo.getId(), clienteSalvo.getNome(), clienteSalvo.getEmail(), clienteSalvo.getTelefone()
+        );
     }
 
-    public void deletar(Long id) {
-        Cliente cliente = buscarPorId(id);
+    public String deletar(Long id) {
+        Cliente cliente = buscarEntidadePorId(id);
         clienteRepository.delete(cliente);
+        String msg = "Cliente removido com sucesso";
+        return msg;
     }
 }
