@@ -12,9 +12,37 @@
         <h1>Clientes & Pedidos</h1>
         <p>Front-end simples consumindo API REST com Spring Boot</p>
     </div>
+    <button id="logoutButton" class="secondary hidden" onclick="logout()">Sair</button>
 </header>
 
-<main class="container">
+<main id="authView" class="auth-container">
+    <section class="auth-panel">
+        <div class="auth-tabs">
+            <button id="loginTab" class="tab active" onclick="mostrarAuth('login')">Login</button>
+            <button id="registroTab" class="tab" onclick="mostrarAuth('registro')">Cadastro</button>
+        </div>
+
+        <div id="loginForm" class="auth-form">
+            <input id="loginUsuario" type="text" placeholder="Login">
+            <input id="loginSenha" type="password" placeholder="Senha">
+            <button onclick="login()">Entrar</button>
+        </div>
+
+        <div id="registroForm" class="auth-form hidden">
+            <input id="registroUsuario" type="text" placeholder="Login">
+            <input id="registroSenha" type="password" placeholder="Senha">
+            <select id="registroRole">
+                <option value="USER">USER</option>
+                <option value="ADMIN">ADMIN</option>
+            </select>
+            <button onclick="registrarUsuario()">Cadastrar usuario</button>
+        </div>
+
+        <div id="authStatus" class="auth-status hidden"></div>
+    </section>
+</main>
+
+<main id="appView" class="container hidden">
 
     <section class="card">
         <div class="card-header">
@@ -48,7 +76,7 @@
         <div class="form-grid">
             <input id="pedidoId" type="number" placeholder="ID do pedido">
             <input id="pedidoClienteId" type="number" placeholder="ID do cliente">
-            <input id="pedidoDescricao" type="text" placeholder="Descrição">
+            <input id="pedidoDescricao" type="text" placeholder="Descricao">
             <input id="pedidoValor" type="number" step="0.01" placeholder="Valor">
         </div>
 
