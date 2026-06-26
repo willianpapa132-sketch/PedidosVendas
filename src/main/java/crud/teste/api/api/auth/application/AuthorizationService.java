@@ -1,7 +1,7 @@
-package crud.teste.api.api.service;
+package crud.teste.api.api.auth.application;
 
 
-import crud.teste.api.api.repository.UserRepository;
+import crud.teste.api.api.auth.domain.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

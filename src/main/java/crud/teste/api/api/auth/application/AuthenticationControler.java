@@ -1,10 +1,9 @@
-package crud.teste.api.api.controler;
+package crud.teste.api.api.auth.application;
 
 import crud.teste.api.api.auth.domain.AuthenticationDTO;
 import crud.teste.api.api.auth.domain.LoginResponseDTO;
 import crud.teste.api.api.auth.domain.RegistroDTO;
-import crud.teste.api.api.auth.infrastructure.security.TokenService;
-import crud.teste.api.api.repository.UserRepository;
+import crud.teste.api.api.auth.domain.UserRepository;
 import crud.teste.api.api.auth.domain.User;
 
 import jakarta.validation.Valid;

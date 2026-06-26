@@ -1,6 +1,5 @@
-package crud.teste.api.api.repository;
+package crud.teste.api.api.auth.domain;
 
-import crud.teste.api.api.auth.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -1,4 +1,4 @@
-package crud.teste.api.api.auth.infrastructure.security;
+package crud.teste.api.api.auth.application;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

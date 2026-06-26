@@ -1,6 +1,7 @@
 package crud.teste.api.api.auth.infrastructure.security;
 
-import crud.teste.api.api.repository.UserRepository;
+import crud.teste.api.api.auth.application.TokenService;
+import crud.teste.api.api.auth.domain.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
